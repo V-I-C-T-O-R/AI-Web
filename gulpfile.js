@@ -9,6 +9,8 @@ var express = require('express'),
   babel = require('gulp-babel'),
   io = require("socket.io")(serverApp);
 
+var plumber = require('gulp-plumber');
+
 /* default */
 gulp.task('default', ['js', 'sass', 'socket', 'watch'], function() {
   return gulp.start('server');
@@ -22,6 +24,7 @@ gulp.task('watcher', function() {
 //js
 gulp.task('js', function() {
   gulp.src(['src/js/vue.min.js', 'src/js/socket.io.js', 'src/js/*.js'])
+    .pipe(plumber())
     .pipe(concat('build.js'))
     .pipe(babel())
     .pipe(gulp.dest('dist/js'))
@@ -30,6 +33,7 @@ gulp.task('js', function() {
 // css
 gulp.task('sass', function() {
   gulp.src('src/css/index.scss')
+    .pipe(plumber())
     .pipe(sass())
     .pipe(concat('style.css'))
     .pipe(gulp.dest('dist/css'))
